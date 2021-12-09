@@ -1,6 +1,18 @@
 library(tidyverse)
 library(glue)
 
+gen_data<-function(n_run=5,
+                   n_samp=1000,
+                   mean=0,
+                   sd=1){
+    
+    rerun(n_run,rnorm(n_samp,mean,sd))%>%
+        as_tibble_col()%>%
+        mutate(ind=paste("RUN",
+                         row_number(),sep = "_"))%>%
+        unnest(cols = value)
+}
+
 gen_plot<-function(n_run=5,
                    n_samp=1000,
                    mean=0,
